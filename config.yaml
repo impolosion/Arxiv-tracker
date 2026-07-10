@@ -1,18 +1,26 @@
-categories: ["cs.CV", "cs.LG", "cs.AI"]
+categories: ["cs.IT", "eess.SP", "cs.LG"]
 keywords:
-  - "open vocabulary"
-  - "open-vocabulary"
-  - "open vocabulary segmentation"
-  - "open-vocabulary segmentation"
-  - "vision language model"
-  - "training-free"
-  - "training free"
+  - "deep reinforcement learning"
+  - "reinforcement learning"
+  - "anti-jamming"
+  - "interference mitigation"
+  - "electronic countermeasures"
+  - "dynamic spectrum access"
+  - "fading channel"
+  - "fading environment"
+  - "channel fading"
+  - "prototype"
+  - "implementation"
+  - "hardware-in-the-loop"
+  - "SDR"
+  - "USRP"
 
 # exclude_keywords: # 选择排除的关键词
-#   - "Large Language Model"
-#   - "LLM"
+  - "Atari"
+  - "autonomous driving"
+  - "robotics"
   
-logic: "AND"                 # 组间逻辑：categories 与 keywords 间 AND/OR
+logic: "OR"                 # 组间逻辑：categories 与 keywords 间 AND/OR
 max_results: 30
 sort_by: "lastUpdatedDate"  # 还可以是submittedDate 建议改成lastUpdatedDate按更新时间排，能捞到v2/v3的“新增”
 sort_order: "descending"
@@ -27,11 +35,11 @@ summary:
   # scope: tldr / full / both
   scope: "both"
 
-# —— 邮件发送（QQ 邮箱） ——
+# —— 邮件发送（SEU 邮箱） ——
 email:
   enabled: true
   subject: "[arXiv] Daily Digest"
-  smtp_server: "smtp.qq.com"
+  smtp_server: "smtp.seu.edu.cn"
   smtp_port: 465
   smtp_pass_env: "SMTP_PASS"
   tls: "ssl"  # auto / ssl / starttls
@@ -45,13 +53,13 @@ email:
 llm:
   provider: "openai-compatible"     # 兼容 OpenAI SDK 的服务
   # 硅基流动的版本
-  base_url: "https://api.siliconflow.cn"
-  model: "Qwen/Qwen2.5-7B-Instruct"
-  api_key_env: "OPENAI_COMPAT_API_KEY"
+  # base_url: "https://api.siliconflow.cn"
+  # model: "Qwen/Qwen2.5-7B-Instruct"
+  # api_key_env: "OPENAI_COMPAT_API_KEY"
   # Deepseek的版本
-  # base_url: "https://api.deepseek.com"
-  # model: "deepseek-chat"
-  # api_key_env: "DS_API_KEY"
+  base_url: "https://api.deepseek.com"
+  model: "deepseek-chat"
+  api_key_env: "DS_API_KEY"
   
 
   system_prompt_en: |
