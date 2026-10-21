@@ -1,0 +1,910 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>arXiv 论文速递</title><style>
+:root {
+  --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --muted:#667085; --border:#e5e7eb; --acc:#2563eb;
+}
+:root[data-theme="dark"] {
+  --bg:#0b0f17; --card:#111827; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2937; --acc:#2563eb;
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;line-height:1.6;}
+.container{max-width:900px;margin:0 auto;padding:18px;}
+.header{display:flex;gap:10px;justify-content:space-between;align-items:center;margin:8px 0 16px;flex-wrap:wrap}
+h1{font-size:22px;margin:0}
+.badge{font-size:12px;color:#111827;background:var(--acc);padding:2px 8px;border-radius:999px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;margin:14px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.title{font-weight:700;margin:0 0 6px 0;font-size:18px}
+.meta-line{color:var(--muted);font-size:13px;margin:2px 0}
+.links a{color:var(--acc);text-decoration:none;margin-right:12px}
+.detail{margin-top:10px;background:rgba(2,6,23,.03);border:1px solid var(--border);border-radius:10px;padding:8px 10px}
+summary{cursor:pointer;color:var(--acc)}
+.mono{white-space:pre-wrap;background:rgba(2,6,23,.03);border:1px solid var(--border);padding:10px;border-radius:10px}
+.row{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width: 860px) {
+  .row-2{grid-template-columns:1fr 1fr}
+}
+.footer{color:var(--muted);font-size:13px;margin:20px 0 10px}
+.hr{height:1px;background:var(--border);margin:14px 0}
+.history-list a{display:block;color:var(--acc);text-decoration:none;margin:4px 0}
+.controls{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--border);background:var(--card);padding:6px 10px;border-radius:10px;cursor:pointer;color:var(--text)}
+.btn:hover{border-color:var(--acc)}
+</style>
+<script>
+(function() {
+  const root = document.documentElement;
+  function apply(t) {
+    if (t==='dark') root.setAttribute('data-theme','dark');
+    else if (t==='light') root.removeAttribute('data-theme');
+    else {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        root.setAttribute('data-theme','dark');
+      else root.removeAttribute('data-theme');
+    }
+  }
+  let t = localStorage.getItem('theme') || 'light';
+  if (!['light','dark','auto'].includes(t)) t='light';
+  apply(t);
+  window.__toggleTheme = function() {
+    let cur = localStorage.getItem('theme') || 'light';
+    if (cur==='light') cur='dark';
+    else if (cur==='dark') cur='auto';
+    else cur='light';
+    localStorage.setItem('theme', cur);
+    apply(cur);
+    const el=document.getElementById('theme-label');
+    if(el) el.textContent = cur.toUpperCase();
+  }
+  window.__expandAll = function(open) {
+    document.querySelectorAll('details').forEach(d => d.open = !!open);
+  }
+})();
+</script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>arXiv 论文速递</h1>
+      <div style="display:flex;gap:10px;align-items:center">
+        
+<div class="controls">
+  <button class="btn" onclick="__toggleTheme()">Theme: <span id="theme-label" style="margin-left:6px">AUTO</span></button>
+  <button class="btn" onclick="__expandAll(true)">Expand All</button>
+  <button class="btn" onclick="__expandAll(false)">Collapse All</button>
+</div>
+
+        <span class="badge">2026-10-22 06:08</span>
+      </div>
+    </div>
+    <div class="hr"></div>
+    <div>Snapshot: 20261022_0608</div>
+    <div class="row"><div class="card">
+<div class="title">Joints, Camera, Action! Co-Generating 3D Motion and Video for Arbitrary Rigs</div>
+<div class="meta-line">Authors: Noam Rotstein, Yoad Tewel, Chen Tessler, Haggai Maron, Gal Chechik, Or Litany, Yoni Kasten, Yuval Atzmon</div>
+<div class="meta-line">First: 2026-10-20T17:59:56+00:00 · Latest: 2026-10-20T17:59:56+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28632v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28632v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://research.nvidia.com/labs/par/projects/jca/">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Video generation models can now depict remarkably realistic motion. Yet it is unclear how to use this motion beyond pixels: to animate a specific 3D asset and replay the animation in its 3D scene. For instance, a video model can show a monkey jumping over a crossbar, but it cannot return that jump as replayable 3D motion placed in the 3D scene. Here we present a model that directly co-generates the video and 3D motion for any supplied rig, along with a camera that registers this motion to the scene. Prior video-motion models either handle only human skeletons, often adding billions of parameters, or triangulate 3D motion from generated 2D pose maps. We instead keep 3D motion in a separate model that supports arbitrary skeletons, and connect it to a pretrained video model through a small set of cross-attention layers. This separation lets the motion model first learn how skeletons move from motion-only data, which is easier to obtain and augment than paired video. Additionally, our model learns to locate each joint in the video frames, which lets us recover the camera and place the 3D motion in the scene. To train across many skeletons, we use a generative video editor to place animated 3D assets in scenes suited to their actions, curating the edits so their known motion remains valid. Together with human and robot video, this yields nearly 200K training pairs. Our evaluations demonstrate that our model animates diverse rigs from text more faithfully than video-first pipelines, and its motion responds to the surrounding scene. It also turns video into rig motion, rig motion into video, and enables keyframe-based control of the 3D motion. Videos and additional results are available on our project page: https://research.nvidia.com/labs/par/projects/jca/.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Video generation models can now depict remarkably realistic motion.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Learning Adaptable Dexterous Skills via Hybrid Dexterous Mimicking</div>
+<div class="meta-line">Authors: Yuxuan Kuang, Jiashun Wang, Yixuan Sun, Yufei Ye, Sungjae Park, Umar Iqbal, Katerina Fragkiadaki, Shubham Tulsiani</div>
+<div class="meta-line">First: 2026-10-20T17:59:32+00:00 · Latest: 2026-10-20T17:59:32+00:00</div>
+<div class="meta-line">Comments: Project page: https://yuxuank.com/AdaDex/</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28628v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28628v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Dexterous multi-finger hands hold promise to unlock diverse skills like functional grasps, in-hand reorientation, and dynamic handover that the human-designed world assumes, yet existing learning recipes force a trade-off. Goal-reaching reinforcement learning generalizes to arbitrary object poses but, lacking any human prior, converges to unnatural and unreliable finger strategies; motion tracking reproduces human-like behavior from a single clip but cannot deviate from it. We present AdaDex, a goal-conditioned RL framework that turns a single hand-object trajectory of a few seconds---from mocap data or HOI reconstruction from in-the-wild RGB(D) video---into an adaptable dexterous skill. At the core of AdaDex is Hybrid Dexterous Mimicking: a shared policy is trained on two populations of massively parallel environments: motion tracking environments trained with dense motion tracking objective, which instill the human prior from human motion; and generalization environments with noised initial states and goals and a sparse object-success reward, which force the skill to work far off the reference. From seconds of human motion per skill, the resulting policies can learn diverse adaptable dexterous skills, such as functional grasping, object reposing, in-hand reorientation with finger gaiting, and dynamic behaviors like throw-and-catch. Our method outperforms baselines in terms of generalization and functionality, and we demonstrate transfer across simulators and to the real world. Project page: https://yuxuank.com/AdaDex/.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Dexterous multi-finger hands hold promise to unlock diverse skills like functional grasps, in-hand reorientation, and dynamic handover that the human-designed world assumes, yet existing learning recipes force a trade-off.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Efficient Edge-aware Attention Network for Graph Generation</div>
+<div class="meta-line">Authors: Vincent Jung, Alba Carballo-Castro, Yiming Qin, Lonneke van der Plas, Pascal Frossard</div>
+<div class="meta-line">Venue: ICML 2026</div>
+<div class="meta-line">First: 2026-10-20T17:56:05+00:00 · Latest: 2026-10-20T17:56:05+00:00</div>
+<div class="meta-line">Comments: Accepted at the Workshop on Graph Foundation Models and the Workshop on Structured Probabilistic Inference &amp; Generative Modeling, ICML 2026, Seoul, South Korea</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28618v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28618v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Graph generative models commonly use graph-specific Transformer architectures to jointly update node and edge features. However, these architectures do not directly benefit from recent hardware-aware attention implementations, limiting their scalability. The adaptation is, however, non-trivial: edge and graph-level features must be injected into pairwise attention scores, graph masks must be respected, and dynamic edge updates remain a major source of quadratic memory usage. We propose an edge-aware attention layer for graph generation that incorporates structural information through head-wise score modulation, while updating edge representations with a lightweight residual mechanism that retains attention-score dependent edge updates. This layer can be effectively implemented using PyTorch&#x27;s FlexAttention. We achieve similar generation quality to our baseline while reducing peak GPU memory by around 65% and substantially improving training and sampling throughput. These results suggest that the proposed architecture is a practical step toward scalable graph foundation models.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Graph generative models commonly use graph-specific Transformer architectures to jointly update node and edge features.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Entanglement Distribution in Quantum Switch Networks: Memory Limits and Achievability</div>
+<div class="meta-line">Authors: Lei Hu, Alptug Aytekin, Stavros Mitrolaris, Mohamed Nomeir, Subhankar Banerjee, Sennur Ulukus, Saikat Guha</div>
+<div class="meta-line">First: 2026-10-20T17:46:05+00:00 · Latest: 2026-10-20T17:46:05+00:00</div>
+<div class="meta-line">Comments: The abstract was shortened to meet arXiv&#x27;s character limit</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28596v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28596v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">We study the minimum persistent memory required to distribute a graph state through a quantum switch. Specifically, consider a central switch that assists $n$ remote users in distributing a graph state, using independently generated user-switch Bell pairs. Since Bell-pair generation is probabilistic, different links generally succeed at different times. When a Bell-pair is generated, the qubits may need to be stored in memory while waiting for other links to succeed. Recently, new protocols have been proposed to reduce this storage overhead by processing and releasing some switch qubits before all Bell links are available. However, these protocols do not characterize the minimum persistent switch memory required at each stage. Moreover, the local-cover method in the state-of-the-art Piecemaker protocol is computationally expensive for general target graphs.
+  In this work, we characterize the minimum persistent switch memory required after any subset of users&#x27; Bell links are generated and processed. We then develop an online stabilizer-transition protocol that attains this limit, which can be implemented in polynomial time in the number of qubits $n$. Remarkably, this optimal protocol can provide substantial memory reductions over existing heuristic approaches. In particular, for the path graph $P_n$ over $n$ users, Piecemaker protocol requires at least $\lfloor n/2\rfloor$ qubits of peak persistent memory for \textit{every Bell-links generation order}, whereas under the order $(1,2,\ldots,n)$, our protocol requires only one persistent switch qubit. Finally, the same stabilizer-transition framework also provides a direct forward construction for sequential graph-state generation using the minimum number of quantum emitters, equal to the maximum of the height function.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">We study the minimum persistent memory required to distribute a graph state through a quantum switch.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Gibson Env: Real-World Perception for Embodied Agents</div>
+<div class="meta-line">Authors: Fei Xia, Amir Zamir, Zhi-Yang He, Alexander Sax, Jitendra Malik, Silvio Savarese</div>
+<div class="meta-line">Venue: CVPR 2018 spotlight</div>
+<div class="meta-line">First: 2018-08-31T09:56:43+00:00 · Latest: 2026-10-20T17:37:11+00:00</div>
+<div class="meta-line">Comments: Access the code, dataset, and project website at http://gibsonenv.stanford.edu/ . CVPR 2018 (spotlight)</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/1808.10654v2">Abs</a> · <a href="https://arxiv.org/pdf/1808.10654v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Developing visual perception models for active agents and sensorimotor control are cumbersome to be done in the physical world, as existing algorithms are too slow to efficiently learn in real-time and robots are fragile and costly. This has given rise to learning-in-simulation which consequently casts a question on whether the results transfer to real-world. In this paper, we are concerned with the problem of developing real-world perception for active agents, propose Gibson Virtual Environment for this purpose, and showcase sample perceptual tasks learned therein. Gibson is based on virtualizing real spaces, rather than using artificially designed ones, and currently includes over 1400 floor spaces from 572 full buildings. The main characteristics of Gibson are: I. being from the real-world and reflecting its semantic complexity, II. having an internal synthesis mechanism, &quot;Goggles&quot;, enabling deploying the trained models in real-world without needing further domain adaptation, III. embodiment of agents and making them subject to constraints of physics and space.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Developing visual perception models for active agents and sensorimotor control are cumbersome to be done in the physical world, as existing algorithms are too slow to efficiently learn in real-time and robots are fragile and costly.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Continuous-Time Policy Gradient from Discrete Data: Convergence Analysis and Model-Free Algorithms</div>
+<div class="meta-line">Authors: Martin Hernandez, Xinyan Qing, Mo Zhou, Yuhua Zhu</div>
+<div class="meta-line">First: 2026-10-20T17:33:08+00:00 · Latest: 2026-10-20T17:33:08+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28580v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28580v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Continuous-time reinforcement learning seeks an optimal policy under unknown dynamics driven by stochastic differential equations using observations collected at discrete times. We develop a policy gradient framework that combines rigorous convergence analysis with learning from discrete data. We first establish a performance difference lemma and derive policy gradient formulas for randomized and parametrized policies. We then prove exponential convergence of an entropy-regularized policy flow to the regularized optimum. For discrete parametrized updates, we derive a convergence bound that explicitly separates the contributions of critic error, policy-regression error, and the learning step size. To enable learning under unknown dynamics, we integrate this framework with PhiBE, which constructs a continuous-time surrogate generator from discrete transition data. The resulting on-policy and off-policy model-free actor-critic algorithms preserve the continuous-time structure of the control problem. Numerical experiments on an entropy-regularized linear-quadratic regulator and a nonlinear wheeled robot demonstrate the performance and stability of the proposed methods with both known and data-driven dynamics.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Continuous-time reinforcement learning seeks an optimal policy under unknown dynamics driven by stochastic differential equations using observations collected at discrete times.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Multi-Marginal Inverse Optimal Transport for Contrastive Learning Via Explicit Anchor-Positive-Negative Coupling</div>
+<div class="meta-line">Authors: Ngoc-Hai Nguyen, Thuan Nguyen, Prakash Ishwar, Shuchin Aeron</div>
+<div class="meta-line">First: 2026-09-27T16:41:35+00:00 · Latest: 2026-10-20T16:59:07+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2609.33741v3">Abs</a> · <a href="https://arxiv.org/pdf/2609.33741v3">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Inverse Optimal Transport (OT) based methods for representation learning learn representations such that the global OT coupling between a pair of data marginals in the representation space, concentrates on the positive pairs. This is in contrast to previous methods that primarily focused on pairwise matching. However, these methods $\textit{DO NOT}$ utilize negative pairs and hence are not truly contrastive in their approach. We show that this leads to issues of dimensional collapse and hence degraded downstream performance. To alleviate this, we develop a novel multi-marginal (MM) inverse OT (IOT) contrastive learning (CL) approach called Neg-MMIOT-CL, which learns representations such that the global multi-marginal OT (MMOT) coupling between a triple of data marginals, with respect to a carefully designed ground-cost between triplets of data points in the representation space, concentrates on the anchor-positive-negative $\textit{triplets}$. For a latent class model, we empirically show that Neg-MMIOT-CL alleviates dimensional collapse. Furthermore, for a specific choice of ground cost for all triplets in representation space, we prove that the optimal representation configuration for Neg-MMIOT-CL exhibits equiangular property for within-class and across-class representations, which translates to Neural-Collapse when the representation dimension is larger than the number of classes minus one -- a result that is $\textit{previously established only}$ for pairwise contrastive learning methods. Finally, we propose Neg-IOT-CL-PushPull, that is a computationally efficient alternative to Neg-MMIOT-CL, alleviating the high cost of computing MMOT plans needed during implementation. We apply these methods on both synthetic and real-world datasets and show significant improvements over existing OT-based contrastive learning methods.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Inverse Optimal Transport (OT) based methods for representation learning learn representations such that the global OT coupling between a pair of data marginals in the representation space, concentrates on the positive pairs.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">LocaLeJEPA: Maximum Entropy Representations under Geometric Priors</div>
+<div class="meta-line">Authors: Kartik Tandon, Alessio Borgi, Pavel Snopov, Inés García-Redondo, Davide D&#x27;Ascenzo, Sebastiano Cultrera di Montesano, Fabrizio Silvestri, Pietro Liò, Francesca Dominici, Randall Balestriero, Claudio Battiloro</div>
+<div class="meta-line">First: 2026-10-20T16:15:06+00:00 · Latest: 2026-10-20T16:15:06+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28458v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28458v1">PDF</a> · <a href="https://github.com/alessioborgi/LocaLeJEPA">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Joint-Embedding Predictive Architectures (JEPA) offer an appealing approach to self-supervised learning, but are typically prone to representation collapse. LeJEPA resolves this by introducing a theoretically grounded distribution-matching objective that drives the embedding towards an isotropic Gaussian. However, this approach is fundamentally tied to Euclidean assumptions, and its global target does not reflect domain-specific geometric priors, such as the use of non-Euclidean embedding geometries, e.g., equivariant CNNs or hyperbolic ViTs. We thus introduce LocaLeJEPA, a framework motivated by a manifold-theoretic reformulation of LeJEPA&#x27;s entropy-maximization property. The accompanying LocaLeReg, a novel locally Euclidean distribution-matching regularizer, enables a stable and scalable implementation of the LocaLeJEPA framework. We then perform extensive experiments in the vision setting on models trained on ImageNet-1K. LocaLeJEPA significantly outperforms LeJEPA when paired with hyperbolic ViT-S/8 and equivariant ResNet-50 backbones, and also with ordinary Euclidean ViT-S/8 and ViT-L/14 backbones. This holds both in terms of linear and k-NN classification performance on ImageNet and on a series of downstream tasks tested. We view the LocaLeJEPA formalism as a principled approach to the JEPA paradigm that better respects intrinsic data geometry while also accommodating generalizations to exotic embedding geometries. Code available at https://github.com/alessioborgi/LocaLeJEPA.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Joint-Embedding Predictive Architectures (JEPA) offer an appealing approach to self-supervised learning, but are typically prone to representation collapse.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Confessions of a Masked MDP</div>
+<div class="meta-line">Authors: Sebastian Reboul, Lorenzo Croissant, Hélène Halconruy</div>
+<div class="meta-line">First: 2026-10-20T15:22:31+00:00 · Latest: 2026-10-20T15:22:31+00:00</div>
+<div class="meta-line">Comments: 18 pages, 7 figures Submitted to AISTATS 2027</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28360v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28360v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">In reinforcement learning, one presumes the action set to be known ahead of time, and, thus, one must know if any state-action pairs are not permissible
+  ahead of computations. In some applications, determining this action mask is the main computational bottleneck. Isolating this problem to highlight its core
+  properties, we study how to combine the search for an optimal policy with the learning of the mask itself, under a linear MDP model in which each attempted
+  action reveals the exact value of a linear score determining its validity. In this framework, we first construct an algorithm based on deterministic
+  optimistic optimization and show that it is minimax optimal, which we show is also computationally efficient. However, it is sub-optimal on non-degenerate
+  instances, as we show. We propose an alternative, which is also computationally efficient, which plans its exploration strategy. This algorithm admits a
+  formal interpretation as an analogue of information-directed-sampling for deterministic feedback, which may be of independent interest. Finally, we study an
+  application of this framework to transfer learning, where the invalid action set changes over time.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">In reinforcement learning, one presumes the action set to be known ahead of time, and, thus, one must know if any state-action pairs are not permissible ahead of computations.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Local Work, Global Progress: A Convergence Theory of AI Agent Collaboration</div>
+<div class="meta-line">Authors: Ivan Ilin, Peter Richtárik</div>
+<div class="meta-line">First: 2026-10-20T14:37:06+00:00 · Latest: 2026-10-20T14:37:06+00:00</div>
+<div class="meta-line">Comments: 59 pages, 15 figures, 28 tables. Code: https://github.com/vectozavr/local-work-global-progress</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28286v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28286v1">PDF</a> · <a href="https://github.com/vectozavr/local-work-global-progress">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Teams of large language model (LLM) agents are increasingly applied to complex tasks, but their collaboration protocols are mostly designed empirically, without convergence guarantees. We formalize collaborative problem solving as block optimization: each agent improves one part of a shared solution, guided by its local objective plus a correction for how its changes affect the other parts. A coordinator checks every proposal against the global objective and merges proposals that do not interfere with each other. We prove linear convergence up to an error floor that vanishes when the corrections are exact. Interfering proposals can also be merged once their combination has been checked; the rate then depends on how well the proposals actually combine, not on worst-case interactions. With GPT-OSS-120B agents on robot routing, a three-agent team finds collision-free plans in every run, better than those of a single agent that controls all robots. On a larger routing task, a six-agent team completes its search about twice as fast as the single agent (in median). Merging the best checked combination of proposals, rather than only proposals that do not interfere, cuts the team&#x27;s search time by about 30%. With constants measured on the runs, our convergence bound holds in every round and follows the observed progress. We also test the theory on query planning in SQLite and on a synthetic task.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Teams of large language model (LLM) agents are increasingly applied to complex tasks, but their collaboration protocols are mostly designed empirically, without convergence guarantees.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Interference-Graph-Aided Multi-Agent Reinforcement Learning for Beam Hopping LEO Satellite Networks</div>
+<div class="meta-line">Authors: Hao Yuan, Ziyi Yang, Xing Zhang</div>
+<div class="meta-line">First: 2026-10-20T14:07:32+00:00 · Latest: 2026-10-20T14:07:32+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28248v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28248v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Beam hopping technology enables LEO satellites to dynamically switch beam coverage positions, providing flexible resource allocation for non-uniformly distributed traffic demands. However, the severe spatial interference coupling among beams makes coordinated scheduling challenging. To address this problem, in this letter, we propose an interference-graph-aided multi-agent reinforcement learning approach that constructs an interference graph to capture beam coupling relationships and injects this structural prior into agent-side representation learning. Each beam agent aggregates information from interference neighbors via graph convolution before estimating local Q-values, which are then decomposed by the standard mixing network. Simulation results demonstrate that the proposed method achieves 34.4\% higher throughput than QMIX with more stable interference management, under non-uniform traffic and co-channel interference settings.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Beam hopping technology enables LEO satellites to dynamically switch beam coverage positions, providing flexible resource allocation for non-uniformly distributed traffic demands.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Hybrid Belief Reinforcement Learning for Efficient Coordinated Spatial Exploration</div>
+<div class="meta-line">Authors: Danish Rizvi, David Boyle</div>
+<div class="meta-line">First: 2026-03-04T00:00:34+00:00 · Latest: 2026-10-20T13:42:58+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2603.03595v2">Abs</a> · <a href="https://arxiv.org/pdf/2603.03595v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Coordinating multiple autonomous agents to explore and serve spatially heterogeneous demand requires jointly learning unknown spatial patterns and planning trajectories that maximize task performance. Pure model-based approaches provide structured uncertainty estimates but lack adaptive policy learning, while deep reinforcement learning often suffers from poor sample efficiency when spatial priors are absent. This paper presents a hybrid belief-reinforcement learning (HBRL) framework to address this gap. In the first phase, agents construct spatial beliefs using a Log-Gaussian Cox Process (LGCP) and execute information-driven trajectories guided by a Pathwise Mutual Information (PathMI) planner with multi-step lookahead. In the second phase, trajectory control is transferred to a Soft Actor-Critic (SAC) agent, warm-started through dual-channel knowledge transfer: i) belief state transfer supplies spatial uncertainty, and ii) replay buffer seeding provides demonstration trajectories generated during LGCP exploration. A variance-normalized overlap penalty enables coordinated coverage through shared belief state, permitting cooperative sensing in high-uncertainty regions while discouraging redundant coverage in well-explored areas. The framework is instantiated in two scenarios: multi-Unmanned Aerial Vehicle (UAV) wireless service provisioning, and mobility-on-demand sensing over measured New York City taxi demand. In the wireless scenario it achieves 10.8% higher cumulative reward and takes 38% fewer episodes to reach the reward level of the baselines, with ablation studies confirming that dual-channel transfer outperforms either channel alone; the taxi scenario yields consistent gains with all algorithmic components unchanged.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Coordinating multiple autonomous agents to explore and serve spatially heterogeneous demand requires jointly learning unknown spatial patterns and planning trajectories that maximize task performance.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Parameter-Efficient Adaptation of Time Series Foundation Models for Electrical Load Forecasting</div>
+<div class="meta-line">Authors: Aliullah, Julian Oelhaf, Edouard Fouché, Jessica Deuschel, Christian Bergler, Andreas Maier, Siming Bayer</div>
+<div class="meta-line">First: 2026-10-20T13:40:48+00:00 · Latest: 2026-10-20T13:40:48+00:00</div>
+<div class="meta-line">Comments: Accepted for presentation at the IEEE Power &amp; Energy Student Summit (PESS 2026), Karlsruhe, Germany. 6 pages, 4 figures, 1 table</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28200v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28200v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Accurate electrical load forecasting supports power-system operation across countries, regions, cities, and buildings, but repeated development of target-specific models is costly. Time series foundation models (TSFMs) provide reusable pretrained backbones, although multi-domain pretraining may not fully capture load-specific characteristics. This paper compares pretrained inference, full fine-tuning, and low-rank adaptation (LoRA) in terms of forecasting accuracy and adaptation efficiency across four electrical load aggregation levels. MOIRAI 1.0 Large serves as the primary backbone, while Chronos-2 assesses whether the findings transfer across model families. The evaluation covers both in-distribution (ID) and out-of-distribution (OOD) settings and examines whether compact adaptation provides consistent gains over strong pretrained checkpoints. Pretrained foundation models outperform the implemented seasonal naive and XGBoost baselines across the evaluated aggregation levels. On MOIRAI Large, rank-16 LoRA reduces normalized mean absolute error (NMAE) by 7.5% on average while updating 3.146 million parameters, about 1% of the model, and retains most of the improvement from full fine-tuning. Chronos-2 achieves lower pretrained NMAE than MOIRAI but benefits less from adaptation. OOD results show that adaptation benefits vary by target, with the clearest gains for the local-area series and several buildings. Overall, LoRA provides a favorable accuracy-efficiency trade-off when adaptation yields a meaningful gain over a strong pretrained checkpoint.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Accurate electrical load forecasting supports power-system operation across countries, regions, cities, and buildings, but repeated development of target-specific models is costly.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Reframing Object-Centric Reinforcement Learning: From Absolute to Relative Representations</div>
+<div class="meta-line">Authors: Cedric Derstroff, Jannis Blüml, Janosch Moos, Michael Girstl, Zihan Ye, Debora Clever, Kristian Kersting</div>
+<div class="meta-line">First: 2026-10-20T13:38:23+00:00 · Latest: 2026-10-20T13:38:23+00:00</div>
+<div class="meta-line">Comments: 13 pages, 7 figures, 10 pages Appendix, First two authors contributed equally</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28197v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28197v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Object-centric reinforcement learning agents typically receive each object&#x27;s position in a fixed global frame, even though their decisions usually depend on where objects are relative to one another. These absolute views often fail to capture the local context that is most relevant to the agent&#x27;s behavior. As a result, an agent must relearn the same response at every location where a configuration can occur, and its performance collapses when the scene is merely shifted. In this work, we propose a shift toward Object-Relative Coordinates fixed to Anchor (ORCA), where entities are described in a relative frame of reference. To operationalize this idea, we introduce Object-Relative inductive-Bias Transformers (ORBiT), a transformer-based architecture for processing anchor-relative inputs in reinforcement learning. Our results suggest these relative representations improve performance for both MLP and transformer agents. Furthermore, we demonstrate that ORBiT outperforms the pixel-based PPO baseline, achieving an aggregate HNS IQM greater than 1.0 over 13 Atari games. ORBiT learns the game of Foosball from scratch, dominating all baselines. In our controlled Tag environment, we further show that ORCA extends to rotations, that ORBiT generalizes to unseen numbers of distractors, and that these gains require a decision-relevant anchor.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Object-centric reinforcement learning agents typically receive each object&#x27;s position in a fixed global frame, even though their decisions usually depend on where objects are relative to one another.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Dynamic Cross-Modal Prompt Generation for Multimodal Continual Instruction Tuning</div>
+<div class="meta-line">Authors: Tao Hu, Da-Wei Zhou</div>
+<div class="meta-line">First: 2026-05-11T15:59:06+00:00 · Latest: 2026-10-20T13:03:32+00:00</div>
+<div class="meta-line">Comments: Accepted to NeurlPS 2026. Code is available at https://github.com/LAMDA-CL/NeurIPS2026-Drape</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2605.10765v2">Abs</a> · <a href="https://arxiv.org/pdf/2605.10765v2">PDF</a> · <a href="https://github.com/LAMDA-CL/NeurIPS2026-Drape">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Multimodal Large Language Models (MLLMs) achieve strong performance through instruction tuning, yet real-world deployment often requires continual capability expansion across sequential tasks. In such scenarios, Multimodal Continual Instruction Tuning (MCIT) aims to acquire new capabilities while limiting catastrophic forgetting. Existing methods mainly follow a module-composition paradigm: they maintain task-level prompts or LoRA experts and dynamically route or aggregate a subset of them at inference. However, samples within the same task can still differ substantially in visual scenes, question intents, and reasoning demands. This motivates instance-level adaptation to individual query-image pairs rather than only selecting or combining task-level modules. To this end, we propose DRAPE (Dynamic Cross-Modal Prompt Generation), a prompt-learning framework that synthesizes continuous instance-specific soft prompts for MCIT. Instead of selecting prompts from a fixed pool, DRAPE derives prompt queries from the textual instruction and cross-attends to visual patch features, producing prompts conditioned on query-image pairs that are prepended to the frozen LLM. To mitigate forgetting during sequential updates, DRAPE applies null-space gradient projection to the shared projector and uses CLIP-based prototype routing for task-label-free generator selection at inference. Extensive experiments on MCIT benchmarks show that DRAPE achieves state-of-the-art performance among representative prompt-based and LoRA-based continual-learning baselines. Code is available at: https://github.com/LAMDA-CL/NeurIPS2026-Drape.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Multimodal Large Language Models (MLLMs) achieve strong performance through instruction tuning, yet real-world deployment often requires continual capability expansion across sequential tasks.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Causal Discovery for Linear Models with Latent Confounding via Multi-domain Identifiable Representation Learning</div>
+<div class="meta-line">Authors: Danru Xu, Aapo Hyvärinen, Sara Magliacane</div>
+<div class="meta-line">First: 2026-10-20T12:43:23+00:00 · Latest: 2026-10-20T12:43:23+00:00</div>
+<div class="meta-line">Comments: 29 pages, 6 figures</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28134v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28134v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Causal discovery with latent confounding is particularly challenging, but a common setting in real-world data. In this work, we focus on linear causal models with latent confounding, represented by acyclic directed mixed graphs (ADMGs). Existing methods that fully identify ADMGs typically assume non-Gaussianity or graphical constraints, such as bow-freeness. In contrast, we propose Linear ADMG Learning (LinADMG), a framework for learning ADMGs for linear causal models through identifiable representation learning. Rather than relying on non-Gaussianity or bow-freeness, LinADMG leverages multi-domain settings to identify the noise variables. We show that the identifiability of the noise variables is sufficient for recovering all direct causal relations, and that, under an additional latent-confounding no-cancellation condition, LinADMG can identify the whole ADMG. We implement LinADMG with four identifiable representation learning approaches from the literature and validate the methods on simulated and semisynthetic datasets.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Causal discovery with latent confounding is particularly challenging, but a common setting in real-world data.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">NestedVLA: Learning to Consolidate and Generate Skills for Vision-Language-Action Models</div>
+<div class="meta-line">Authors: Guodong Du, Wanyu Lin</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-10-16T10:42:29+00:00 · Latest: 2026-10-20T12:11:31+00:00</div>
+<div class="meta-line">Comments: Camera-ready version accepted at NeurIPS 2026. Updated to the final conference format and included the NeurIPS checklist. 30 pages, 3 figures. Code: https://github.com/WanyuGroup/NeurIPS2026-NestedVLA</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.23271v3">Abs</a> · <a href="https://arxiv.org/pdf/2610.23271v3">PDF</a> · <a href="https://github.com/WanyuGroup/NeurIPS2026-NestedVLA">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Vision-language-action (VLA) models can learn a wide range of robotic skills, but combining separately trained skills remains challenging. The original training data may be unavailable for joint retraining, while directly merging model weights can cause interference. We propose NestedVLA, which consolidates independently fine-tuned VLA policies without access to their original training data. Instead of merging all updates into one checkpoint, a hypernetwork embedded in the VLA generates action-expert weight updates for a selected task. Each task&#x27;s compressed vision-language model update is stored separately, and both updates are added to a frozen base VLA to instantiate the corresponding policy. We evaluate NestedVLA by consolidating three policies fine-tuned with reinforcement learning on MetaWorld, ManiSkill, and CALVIN. It achieves 66.7% average success, improving on the strongest model-merging baseline by 41.1 percentage points. It performs within 1 percentage point of per-task fine-tuning on ManiSkill and substantially narrows the gap on CALVIN. In this three-policy setting, total storage is 1.5x that of a single full checkpoint. Code is available at https://github.com/WanyuGroup/NeurIPS2026-NestedVLA.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Vision-language-action (VLA) models can learn a wide range of robotic skills, but combining separately trained skills remains challenging.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">KuaFu: Compressing Long User Behavior into Understanding at Billion Scale</div>
+<div class="meta-line">Authors: Jiahao Hui, Lin Zhu, Ben Tan, Yishen Hu, Jingdong Shu, Zetai Jiang, Xining Ran, Yeshou Cai, Gong Chen, Haijie Gu</div>
+<div class="meta-line">First: 2026-09-25T09:39:39+00:00 · Latest: 2026-10-20T12:09:04+00:00</div>
+<div class="meta-line">Comments: 12 pages, 6 figures, 3 tables</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2609.31045v2">Abs</a> · <a href="https://arxiv.org/pdf/2609.31045v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Learning user preferences from long behavioral sequences is fundamental to large-scale advertising, recommender systems, and conversational agents. In industrial systems, preference modeling is typically task-wise, with different downstream tasks independently processing the same user history to capture different aspects of preference. This repeated processing creates substantial redundancy at billion-user scale, especially as preferences evolve and representations require frequent updates. We present KuaFu, a unified user preference modeling system that replaces repeated user-level sequence encoding with reusable item-level compressed representations. Each behavioral item is encoded once and shared across users and downstream tasks, while a user&#x27;s history is built chronologically and extended with new item representations as they arrive, letting KuaFu capture evolving preferences without re-encoding the entire history. To reduce inference and storage overhead, KuaFu introduces a two-axis projector: token-axis compression shortens behavior sequences by up to 15x and reduces each item from 150 KB to 10 KB, while width-axis compression reduces the cached representation to 0.5 KB. We further develop a four-stage training pipeline consisting of reconstruction pre-training, preference-understanding post-training, joint compression-generation training, and hallucination-aware reinforcement learning, progressively improving representation fidelity and downstream utility. Across six MRQA and five RecBench benchmarks, KuaFu consistently outperforms existing compression methods at comparable ratios, with gains of up to 17.7 EM and 1.90 AUC points respectively. KuaFu has been deployed and evaluated on the Tencent advertising and recommendation platform for ten months. Over this period, it improves per-GPU throughput by up to 350%, saves 190 GPUs, and increases overall GMV by 1.37%.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Learning user preferences from long behavioral sequences is fundamental to large-scale advertising, recommender systems, and conversational agents.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">PULSE: Personalized Opportunistic Learning for Wearable Devices</div>
+<div class="meta-line">Authors: Mattia Giovanni Campana, Dariush Salami, Hüseyin Yiğitler, Stephan Sigg</div>
+<div class="meta-line">First: 2026-10-20T12:00:38+00:00 · Latest: 2026-10-20T12:00:38+00:00</div>
+<div class="meta-line">Comments: Submitted to IEEE PerCom 2027</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28081v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28081v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Wearable devices increasingly support personalized health and well-being applications, but post-deployment data can differ substantially from those used for training, while purely local adaptation may be limited by the data available on a single device during real-world operation. Conventional federated and decentralized learning rely on recurrent communication and stable connectivity, whereas existing opportunistic approaches often exploit available encounters without adequately considering their utility, compatibility, or communication cost.
+  We propose PULSE, an event-driven framework for personalized opportunistic learning that treats each encounter as an online collaboration decision, selecting either no interaction or a promising nearby peer. Peer gradients are incorporated only when compatible with the local learning direction, while past interactions guide future peer selection. Across human activity recognition, fall detection, and stress recognition under synthetic and real contact traces, PULSE preserves or improves personalized classification performance, while reducing peer-assisted exchanges by 80-94% compared with opportunistic model averaging. On-device experiments further demonstrate its feasibility on wearable hardware: peer-assisted operations require limited energy, while the complete implementation occupies 149.8 KiB of RAM and 561.8 KiB of flash. The obtained results show that selective opportunistic collaboration can provide effective personalization while limiting communication and resource demands on constrained wearable devices.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Wearable devices increasingly support personalized health and well-being applications, but post-deployment data can differ substantially from those used for training, while purely local adaptation may be limited by the data available on a single device during real-world operation.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Tensor Cookbook: Mastering Tensors through Diagrams</div>
+<div class="meta-line">Authors: Beheshteh T. Rakhshan, Guillaume Rabusseau</div>
+<div class="meta-line">First: 2026-05-15T20:21:14+00:00 · Latest: 2026-10-20T11:55:07+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2605.16610v2">Abs</a> · <a href="https://arxiv.org/pdf/2605.16610v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">High-dimensional data arise naturally in many areas of science and engineering, including machine learning, signal processing, computational physics, and statistics. Such data are often represented as tensors, multi-dimensional generalizations of matrices. While tensors provide a natural representation for multi-modal structure, their direct manipulation quickly becomes challenging as the order grows: the number of parameters increases exponentially, and algebraic expressions involving many indices become difficult to interpret and implement. Tensor networks (TNs) provide an effective framework for addressing these challenges. Originally introduced by Penrose and developed extensively in quantum physics, the graphical language of tensor networks encodes contractions as edges in a graph, reducing notational overhead and revealing structural properties obscured by index notation. Despite the central role of high-dimensional tensors in modern machine learning and numerical analysis, tensor network diagrams remain underutilized outside quantum computing, partly due to the lack of a self-contained mathematical reference accessible to a broad technical audience. This manuscript provides a self-contained guide to tensor networks and their use in tensor algebra. We present the main operations on tensors, contractions, products, and reshaping through, graphical notation, and show how classical tensor decompositions and related computations are naturally expressed in this framework. We also illustrate how tensor networks simplify the derivation of gradients and the manipulation of high-dimensional probability distributions. Throughout, we show that the diagrammatic approach yields genuinely shorter and more transparent proofs of classical identities, rank bounds, and gradient formulas that would otherwise require laborious index manipulation.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">High-dimensional data arise naturally in many areas of science and engineering, including machine learning, signal processing, computational physics, and statistics.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">From RL Papers to Framework Code: Inclusion and Review in Seven Open-Source Training Frameworks</div>
+<div class="meta-line">Authors: Taiheng Pan</div>
+<div class="meta-line">First: 2026-10-20T11:16:01+00:00 · Latest: 2026-10-20T11:16:01+00:00</div>
+<div class="meta-line">Comments: 29 pages (13 pages main text), 5 figures, 12 tables. Data and code at https://github.com/pth2002/rl-method-tracker and https://doi.org/10.5281/zenodo.23495743</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28027v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28027v1">PDF</a> · <a href="https://github.com/pth2002/rl-method-tracker">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Practitioners use reinforcement learning methods for language models through training frameworks, so a method that a framework includes is one configuration change away for its users. We measure how often this happens. We trace seven open-source frameworks for RL post-training through their commit histories and link them to 6,939 screened arXiv papers from January 2025 to June 2026. Of 1,598 papers that propose a general RL training method, 37 reached at least one framework. Across five quarterly cohorts of papers, the number included within 180 days stayed between 5 and 7 while the cohorts grew from 72 to 386 papers. Compared with papers from the same quarters, included papers more often trained policies of 30B parameters or more, at 41 against 10 percent, and more often changed a coefficient, clip, mask or weight in the existing loss, at 29 against 9 percent. Both gaps hold without papers from the companies that maintain the frameworks, while code release was equally common in both groups. The frameworks&#x27; issues and pull requests show that few methods are turned away in public. More than nine in ten of the general methods no framework included have no thread there that cites or names them, and many proposals that do appear stay open without a reply. Two further records, the frameworks&#x27; issues and the technical reports of 13 large open-weight models, show that users rarely report training failures in public and that the reports state 8 of the 13 widely included methods. We release the data as a tracker that links training failures to framework implementations and lists each framework&#x27;s contribution rules and earlier proposals.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Practitioners use reinforcement learning methods for language models through training frameworks, so a method that a framework includes is one configuration change away for its users.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">RANGER: Retrieval Agent for Navigating Graphs with Semantic Evaluation Rewards</div>
+<div class="meta-line">Authors: Artem Mikhaylov, Pavel Konoplev, Nikolay Efanov, Artyom Sorokin, Evgeny Burnaev</div>
+<div class="meta-line">First: 2026-10-20T10:53:41+00:00 · Latest: 2026-10-20T10:53:41+00:00</div>
+<div class="meta-line">Comments: 12 pages, 8 figures, 3 tables. Includes appendices</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.28010v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.28010v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">The integration of Large Language Models and Reinforcement Learning offers a promising direction for complex sequential decision-making tasks, such as multi-hop question answering over knowledge graphs. While LLMs provide strong semantic understanding and reasoning capabilities, they often struggle with precise, multi-step navigation in structured environments. Conversely, RL agents excel at learning navigation policies but are hindered by the difficulty of designing semantically meaningful reward functions. This paper introduces a novel hybrid approach in which an LLM serves as a mentor to an RL agent during training by providing dense, semantically informed reward signals. The RL agent, built on a Transformer-based policy and trained with Group Relative Policy Optimization, learns to navigate a knowledge graph to retrieve relevant information. The LLM evaluates the semantic relevance of the agent&#x27;s traversed paths, generating reward signals that align the agent&#x27;s behavior with the information needs expressed in a query. We integrate this Retrieval Agent for Navigating Graphs with Semantic Evaluation Rewards (RANGER) into a complete question-answering pipeline and evaluate it on the open question answering datasets. Experimental results show that the proposed approach outperforms both a baseline retrieval-augmented system with classical graph search and one using an RL agent trained with heuristic rewards, achieving a significant increase in NLP metrics and LLM-as-a-Judge scores. Our findings demonstrate that deep integration of LLMs into the RL training loop yields more effective and semantically aligned retrieval policies for complex reasoning tasks.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">The integration of Large Language Models and Reinforcement Learning offers a promising direction for complex sequential decision-making tasks, such as multi-hop question answering over knowledge graphs.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">On Johnson-Lindenstrauss Transforms for Byzantine-Robust Optimization</div>
+<div class="meta-line">Authors: Aleksandr Shestakov, Vladimir Aletov, Aleksandr Beznosikov</div>
+<div class="meta-line">First: 2026-10-20T10:29:32+00:00 · Latest: 2026-10-20T10:29:32+00:00</div>
+<div class="meta-line">Comments: 37 pages, 10 tables</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.27989v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.27989v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">The growing scale of data and models in machine learning calls for efficient optimization methods. Distributed optimization addresses this challenge, with compression mechanisms helping to reduce communication costs. A classical tool for dimensionality reduction is the Johnson-Lindenstrauss (JL) transform, which is simple to implement and offers strong geometric guarantees. In particular, JL transforms approximately preserve inner products and pairwise distances between vectors with high probability. In this paper, we exploit this property in Byzantine-robust optimization, where worker messages are weighted according to their alignment with a trusted reference gradient. We further support our theoretical findings with experimental results.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">The growing scale of data and models in machine learning calls for efficient optimization methods.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Learning Reachability-Based Safety Representations for Real-Time Robot Navigation in Unknown and Dynamic Environments</div>
+<div class="meta-line">Authors: Bojan Derajić</div>
+<div class="meta-line">First: 2026-10-12T10:10:45+00:00 · Latest: 2026-10-20T10:22:05+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.16522v2">Abs</a> · <a href="https://arxiv.org/pdf/2610.16522v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Safe robot navigation in unknown, dynamic environments requires more than geometric collision checking: a robot still far from an obstacle may be unable to avoid it because of its speed, orientation, or the obstacle&#x27;s motion. Hamilton--Jacobi (HJ) reachability analysis captures this in a value function whose sign separates states that admit a safe continuation from those where collision is unavoidable, but computing it online for every newly observed environment is too expensive. This dissertation trains neural implicit representations offline on reachability solutions to give optimization-based controllers this information in real time. Since the value function never exceeds the constraint, it equals a directly computed constraint, such as a signed distance, minus a nonnegative dynamics correction. Learning only this correction keeps represented obstacles outside the predicted safe set despite approximation errors. The first two of five methods use the learned function as a terminal constraint in model predictive control, for static local environments and predicted obstacle motion. The next two use it as a barrier candidate in control barrier function safety filters, for static environments and, through pairwise barriers in relative coordinates, for a varying number of moving obstacles. Simulations and hardware experiments on ground and aerial robots show better collision avoidance than geometric and hand-designed baselines, especially for short horizons and moving obstacles. The fifth method replaces the grid-based offline solver, which limits the first four to low-dimensional models. For control-affine dynamics with polytopic inputs, the HJ Hamiltonian is maximized at a vertex, so a parallelizable tree search over vertex inputs can generate training labels. With a loss from the HJ variational inequality, these labels yield barrier candidates for systems with up to 13 states.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Safe robot navigation in unknown, dynamic environments requires more than geometric collision checking: a robot still far from an obstacle may be unable to avoid it because of its speed, orientation, or the obstacle&#x27;s motion.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">QwenGyre: An Elastic Reinforcement Learning Framework for Training xLong-Horizon Agents</div>
+<div class="meta-line">Authors: Weiqi Wang, Yuxin Zhou, Mouxiang Chen, Siyuan Zhang, Yi Zhang, Yuyan Luo, Zhiyu Yin, Chencan Wu, Jiemin Jiang, Wentao Yao, Chujie Zheng, JianWei Zhang</div>
+<div class="meta-line">First: 2026-09-27T19:02:03+00:00 · Latest: 2026-10-20T10:09:15+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2609.33848v2">Abs</a> · <a href="https://arxiv.org/pdf/2609.33848v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Large language model (LLM) agents increasingly undertake extreme-long (xlong) horizon tasks, where a single execution can span hours, hundreds of model--environment interactions, and nearly 1M tokens per rollout. Applying online reinforcement learning (RL) to such executions poses two fundamental challenges: (1) severe execution variance and prolonged rollout delays cause massive GPU idling; and (2) complex non-linear branching generates massive trajectory redundancy, crippling training efficiency. To address these, we presents QwenGyre, an end-to-end framework for xlong-horizon online RL. QwenGyre elastically reallocates GPUs between rollout and training without interrupting live executions, while its trajectory processor reconstructs branching histories, scores partial progress, and deduplicates redundant paths to bound training costs. Scaled to our flagship model, Qwen~3.8 2.4T, with 700K tokens per rollout, QwenGyre yields a 6.0% absolute gain on NL2RepoBench (52.5% $\to$ 58.5%) in 48 steps. Across our evaluations on diverse domains of training datasets, QwenGyre delivers up to $1.85\times$ and $1.78\times$ speedups over Colocate and Async, respectively.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Large language model (LLM) agents increasingly undertake extreme-long (xlong) horizon tasks, where a single execution can span hours, hundreds of model--environment interactions, and nearly 1M tokens per rollout.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">infomeasure-rs: A High-Performance Rust Library for Information-Theoretic Measures and Estimators</div>
+<div class="meta-line">Authors: Carlson Moses Büth</div>
+<div class="meta-line">First: 2026-10-20T09:57:29+00:00 · Latest: 2026-10-20T09:57:29+00:00</div>
+<div class="meta-line">Comments: 21 pages, 7 figures, 4 tables. Documentation: https://infomeasure.org/</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.27951v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.27951v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Information theory has become a standard tool across the natural and social sciences, yet practical use is limited by estimator choice, fragmented software, reproducibility, and computational cost. We present infomeasure-rs, an open-source Rust library that brings a broad set of information-theoretic measures and estimators into one self-contained, type-safe package. It covers entropy, mutual information, conditional mutual information, transfer entropy, conditional transfer entropy, cross-entropy, and the Kullback-Leibler and Jensen-Shannon divergences, with discrete (plug-in and bias-corrected), kernel, ordinal, and nearest-neighbour estimators, including the Rényi and Tsallis families, and exposes local and global values and significance testing through a consistent trait interface. It ships as a single portable binary with no runtime dependency and is continuously validated against a reference implementation. On a single central processing unit (CPU) core, and even without its GPU or parallel paths, it is the fastest of the packages we compared across languages, matching the closest packages only for plug-in discrete entropy and substantially faster for mutual information, the conditional and transfer measures, and the kernel, ordinal, and generalised-entropy estimators. The optional GPU and multi-threaded paths accelerate selected continuous estimators further. The library is open source and, to our knowledge, the most complete information-theory package for Rust.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Information theory has become a standard tool across the natural and social sciences, yet practical use is limited by estimator choice, fragmented software, reproducibility, and computational cost.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Physics Inspired Neural Networks Enable Efficient Graph Coloring</div>
+<div class="meta-line">Authors: Lorenzo Colantonio, Andrea Cacioppo, Federico Scarpati, Maria Chiara Angelini, Federico Ricci-Tersenghi, Stefano Giagu</div>
+<div class="meta-line">First: 2024-08-02T18:02:51+00:00 · Latest: 2026-10-20T09:50:35+00:00</div>
+<div class="meta-line">Comments: 12 pages, 6 figures</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2408.01503v3">Abs</a> · <a href="https://arxiv.org/pdf/2408.01503v3">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Combinatorial optimization problems near algorithmic phase transitions represent a fundamental challenge for both classical algorithms and machine learning approaches. Among them, graph coloring is a prototypical constraint satisfaction problem characterized by phase transitions that fragment the solution space into distinct clusters, making the search for valid solutions challenging. Here we introduce a physics-inspired neural framework that learns to solve large-scale graph coloring instances by combining graph neural networks with statistical-mechanics principles. Our approach integrates a planting-based supervised signal, symmetry-breaking regularization, and iterative noise-annealed neural dynamics to navigate complex solution landscapes. When the number of iterations scales quadratically with graph size, the learned solver successfully tackles increasingly challenging instances, even in regimes where finding valid solutions becomes particularly difficult, demonstrating its ability to extract meaningful information from the graph structure. The model generalizes from small training graphs to instances up to 20 times larger, demonstrating that neural architectures can learn scalable algorithmic strategies that remain effective in hard connectivity regions. These results establish a general framework for learning neural solvers that operate near fundamental phase boundaries in combinatorial optimization and inference.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Combinatorial optimization problems near algorithmic phase transitions represent a fundamental challenge for both classical algorithms and machine learning approaches.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">When Every Bit Counts in Quantized Beamforming: From CSI Feedback to Low-Resolution Hardware</div>
+<div class="meta-line">Authors: Yasaman Khorsandmanesh, Parisa Ramezani, Emil Bjornson</div>
+<div class="meta-line">First: 2026-10-20T09:37:48+00:00 · Latest: 2026-10-20T09:37:48+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.27923v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.27923v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Multiple-input multiple-output (MIMO) is a key technology in modern wireless networks, but its performance is often analyzed under ideal hardware assumptions. In practical implementations, however, quantization appears throughout the signal-processing chain, including channel state information (CSI) feedback, fronthaul signaling, beamforming coefficients, data converters, and finite-resolution phase shifters. These impairments do not act independently: they alter the channel information available for beamforming, constrain the feasible transmit signals, and can ultimately limit beamforming gain and interference suppression. This article provides a perspective on quantized beamforming by connecting its main sources, performance implications, and mitigation strategies. We discuss codebook-based CSI feedback, quantization-aware beamforming, low-resolution converter modeling, and finite-resolution hybrid beamforming, and use representative numerical examples to illustrate when quantization becomes a dominant performance bottleneck. We further highlight emerging directions in joint beamforming and quantization design, adaptive-resolution architectures, and new antenna technologies with discrete hardware constraints. The key message is that finite-resolution effects should be modeled explicitly and incorporated into the beamforming design rather than treated as an afterthought.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Multiple-input multiple-output (MIMO) is a key technology in modern wireless networks, but its performance is often analyzed under ideal hardware assumptions.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Curriculum-Augmented GFlowNets For mRNA Sequence Generation</div>
+<div class="meta-line">Authors: Aya Laajil, Abduragim Shtanchaev, Sajan Muhammad, Aya El Mir, Eric Moulines, Tiago Silva, Salem Lahlou</div>
+<div class="meta-line">First: 2025-10-04T13:41:14+00:00 · Latest: 2026-10-20T09:29:23+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2510.03811v2">Abs</a> · <a href="https://arxiv.org/pdf/2510.03811v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">We develop an approach for the de novo synthesis of messenger RNA (mRNA) sequences encoding target proteins. This requires optimizing multiple biological objectives over large combinatorial spaces defined by synonymous codon sequences, a setting where Reinforcement Learning (RL) methods suffer from mode collapse and Generative Flow Networks (GFlowNets) face sparse rewards over long horizons. To address these challenges, we propose Curriculum-Augmented GFlowNets (CAGFNs), a multi-objective GFlowNet trained with an adaptive length-based curriculum driven by learning progress. In a nutshell, CAGFNs learn from progressively harder tasks corresponding to longer target proteins. We evaluate CAGFNs on CodonDesignEnv, a novel codon-level environment that preserves protein identity via dynamic action masking. Our experiments show that CAGFNs achieve competitive or stronger Pareto-front coverage and diversity while converging up to 4 times faster than non-curriculum GFlowNets, and maintaining 100% sequence uniqueness compared to RL baselines.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">We develop an approach for the de novo synthesis of messenger RNA (mRNA) sequences encoding target proteins.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Process-Aware Event Log Augmentation for Process Prediction under Labeled Data Scarcity</div>
+<div class="meta-line">Authors: Sjoerd van Straten, Alessandro Padella, Marwan Hassani</div>
+<div class="meta-line">First: 2026-10-17T16:42:29+00:00 · Latest: 2026-10-20T09:28:51+00:00</div>
+<div class="meta-line">Comments: This paper has been accepted for the International Journal of Cooperative Information Systems</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.24777v2">Abs</a> · <a href="https://arxiv.org/pdf/2610.24777v2">PDF</a> · <a href="https://github.com/SvStraten/SiamSA-PPM-Extension">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Predictive Process Monitoring (PPM) forecasts future events of ongoing business processes based on event logs. However, deep learning PPM approaches are often limited by labeled data scarcity and the low variability of real-world logs. To address this, we introduce SiamSA-PPM, a self-supervised framework combining Siamese learning with statistically grounded data augmentation. It employs novel transformation methods that leverage control-flow semantics and frequent behavioral patterns to generate realistic, semantically valid trace variants, learning generalizable prefix representations without labeled supervision. Extensive experiments on real-world event logs with a wide range of variability, incorporating exhaustive hyperparameter tuning, demonstrate the value of this process-aware augmentation. Compared to state-of-the-art baselines, SiamSA-PPM achieves competitive or superior predictive performance in both next activity and final outcome prediction tasks. An open source implementation of our method is publicly available under https://github.com/SvStraten/SiamSA-PPM-Extension..</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Predictive Process Monitoring (PPM) forecasts future events of ongoing business processes based on event logs.</div>
+</details>
+</div></div>
+    <details style="margin-top:16px" class="detail"><summary>History</summary>
+      <div class="history-list"><a href="archive/20261021_0609.html">20261021_0609</a>
+<a href="archive/20261020_0650.html">20261020_0650</a>
+<a href="archive/20261019_0517.html">20261019_0517</a>
+<a href="archive/20261018_0515.html">20261018_0515</a>
+<a href="archive/20261017_0556.html">20261017_0556</a>
+<a href="archive/20261016_0558.html">20261016_0558</a>
+<a href="archive/20261015_0604.html">20261015_0604</a>
+<a href="archive/20261014_0713.html">20261014_0713</a>
+<a href="archive/20261013_0909.html">20261013_0909</a>
+<a href="archive/20261012_0642.html">20261012_0642</a>
+<a href="archive/20261011_0615.html">20261011_0615</a>
+<a href="archive/20261010_0703.html">20261010_0703</a>
+<a href="archive/20261009_0740.html">20261009_0740</a>
+<a href="archive/20261008_0728.html">20261008_0728</a>
+<a href="archive/20261007_0655.html">20261007_0655</a>
+<a href="archive/20261006_0837.html">20261006_0837</a>
+<a href="archive/20261005_0614.html">20261005_0614</a>
+<a href="archive/20261004_0600.html">20261004_0600</a>
+<a href="archive/20261003_0656.html">20261003_0656</a>
+<a href="archive/20261002_0701.html">20261002_0701</a>
+<a href="archive/20261001_0650.html">20261001_0650</a>
+<a href="archive/20260930_0652.html">20260930_0652</a>
+<a href="archive/20260929_0745.html">20260929_0745</a>
+<a href="archive/20260928_0552.html">20260928_0552</a>
+<a href="archive/20260927_0552.html">20260927_0552</a>
+<a href="archive/20260926_0601.html">20260926_0601</a>
+<a href="archive/20260925_0600.html">20260925_0600</a>
+<a href="archive/20260924_0606.html">20260924_0606</a>
+<a href="archive/20260923_0548.html">20260923_0548</a>
+<a href="archive/20260922_0629.html">20260922_0629</a>
+<a href="archive/20260921_0512.html">20260921_0512</a>
+<a href="archive/20260920_0520.html">20260920_0520</a>
+<a href="archive/20260919_0528.html">20260919_0528</a>
+<a href="archive/20260918_0556.html">20260918_0556</a>
+<a href="archive/20260917_0555.html">20260917_0555</a>
+<a href="archive/20260916_0556.html">20260916_0556</a>
+<a href="archive/20260915_0625.html">20260915_0625</a>
+<a href="archive/20260913_0515.html">20260913_0515</a>
+<a href="archive/20260912_0534.html">20260912_0534</a>
+<a href="archive/20260911_0526.html">20260911_0526</a>
+<a href="archive/20260910_0531.html">20260910_0531</a>
+<a href="archive/20260909_0536.html">20260909_0536</a>
+<a href="archive/20260908_0556.html">20260908_0556</a>
+<a href="archive/20260907_0504.html">20260907_0504</a>
+<a href="archive/20260906_0458.html">20260906_0458</a>
+<a href="archive/20260905_0516.html">20260905_0516</a>
+<a href="archive/20260904_0536.html">20260904_0536</a>
+<a href="archive/20260903_0537.html">20260903_0537</a>
+<a href="archive/20260902_0537.html">20260902_0537</a>
+<a href="archive/20260901_0708.html">20260901_0708</a>
+<a href="archive/20260831_0551.html">20260831_0551</a>
+<a href="archive/20260830_0532.html">20260830_0532</a>
+<a href="archive/20260829_1000.html">20260829_1000</a>
+<a href="archive/20260828_1032.html">20260828_1032</a>
+<a href="archive/20260827_0541.html">20260827_0541</a>
+<a href="archive/20260826_0332.html">20260826_0332</a>
+<a href="archive/20260825_0330.html">20260825_0330</a>
+<a href="archive/20260824_0322.html">20260824_0322</a>
+<a href="archive/20260823_0323.html">20260823_0323</a>
+<a href="archive/20260822_0326.html">20260822_0326</a>
+<a href="archive/20260821_0331.html">20260821_0331</a>
+<a href="archive/20260820_0325.html">20260820_0325</a>
+<a href="archive/20260819_0328.html">20260819_0328</a>
+<a href="archive/20260818_0328.html">20260818_0328</a>
+<a href="archive/20260817_0321.html">20260817_0321</a>
+<a href="archive/20260816_0321.html">20260816_0321</a>
+<a href="archive/20260815_0349.html">20260815_0349</a>
+<a href="archive/20260814_0357.html">20260814_0357</a>
+<a href="archive/20260813_0402.html">20260813_0402</a>
+<a href="archive/20260812_0401.html">20260812_0401</a>
+<a href="archive/20260811_0356.html">20260811_0356</a>
+<a href="archive/20260810_0333.html">20260810_0333</a>
+<a href="archive/20260809_0330.html">20260809_0330</a>
+<a href="archive/20260808_0353.html">20260808_0353</a>
+<a href="archive/20260807_0841.html">20260807_0841</a>
+<a href="archive/20260806_0427.html">20260806_0427</a>
+<a href="archive/20260805_0424.html">20260805_0424</a>
+<a href="archive/20260804_0428.html">20260804_0428</a>
+<a href="archive/20260803_0410.html">20260803_0410</a>
+<a href="archive/20260802_0410.html">20260802_0410</a>
+<a href="archive/20260801_0421.html">20260801_0421</a>
+<a href="archive/20260731_0415.html">20260731_0415</a>
+<a href="archive/20260730_0413.html">20260730_0413</a>
+<a href="archive/20260729_0422.html">20260729_0422</a>
+<a href="archive/20260728_0423.html">20260728_0423</a>
+<a href="archive/20260727_0411.html">20260727_0411</a>
+<a href="archive/20260726_0411.html">20260726_0411</a>
+<a href="archive/20260725_0420.html">20260725_0420</a>
+<a href="archive/20260724_0413.html">20260724_0413</a>
+<a href="archive/20260723_0412.html">20260723_0412</a>
+<a href="archive/20260722_0419.html">20260722_0419</a>
+<a href="archive/20260721_0421.html">20260721_0421</a>
+<a href="archive/20260720_0408.html">20260720_0408</a>
+<a href="archive/20260719_0404.html">20260719_0404</a>
+<a href="archive/20260718_0407.html">20260718_0407</a>
+<a href="archive/20260717_0404.html">20260717_0404</a>
+<a href="archive/20260716_0409.html">20260716_0409</a>
+<a href="archive/20260715_0412.html">20260715_0412</a>
+<a href="archive/20260714_0416.html">20260714_0416</a>
+<a href="archive/20260713_0407.html">20260713_0407</a>
+<a href="archive/20260712_0406.html">20260712_0406</a>
+<a href="archive/20260711_0424.html">20260711_0424</a>
+<a href="archive/20260710_1659.html">20260710_1659</a>
+<a href="archive/20260710_1646.html">20260710_1646</a>
+<a href="archive/20260710_0454.html">20260710_0454</a>
+<a href="archive/20260709_0426.html">20260709_0426</a>
+<a href="archive/20260708_0455.html">20260708_0455</a>
+<a href="archive/20260707_0456.html">20260707_0456</a>
+<a href="archive/20260706_0421.html">20260706_0421</a>
+<a href="archive/20260705_0415.html">20260705_0415</a>
+<a href="archive/20260704_0421.html">20260704_0421</a>
+<a href="archive/20260703_0425.html">20260703_0425</a>
+<a href="archive/20260702_0452.html">20260702_0452</a>
+<a href="archive/20260701_0502.html">20260701_0502</a>
+<a href="archive/20260630_0454.html">20260630_0454</a>
+<a href="archive/20260629_0420.html">20260629_0420</a>
+<a href="archive/20260628_0423.html">20260628_0423</a>
+<a href="archive/20260627_0450.html">20260627_0450</a>
+<a href="archive/20260626_0502.html">20260626_0502</a>
+<a href="archive/20260625_0455.html">20260625_0455</a>
+<a href="archive/20260624_0505.html">20260624_0505</a>
+<a href="archive/20260623_0535.html">20260623_0535</a>
+<a href="archive/20260622_0445.html">20260622_0445</a>
+<a href="archive/20260621_0422.html">20260621_0422</a>
+<a href="archive/20260620_0442.html">20260620_0442</a>
+<a href="archive/20260619_0531.html">20260619_0531</a>
+<a href="archive/20260618_0519.html">20260618_0519</a>
+<a href="archive/20260617_0545.html">20260617_0545</a>
+<a href="archive/20260616_0549.html">20260616_0549</a>
+<a href="archive/20260615_0423.html">20260615_0423</a>
+<a href="archive/20260614_0423.html">20260614_0423</a>
+<a href="archive/20260613_0505.html">20260613_0505</a>
+<a href="archive/20260612_0528.html">20260612_0528</a>
+<a href="archive/20260611_0528.html">20260611_0528</a>
+<a href="archive/20260610_0504.html">20260610_0504</a>
+<a href="archive/20260609_0514.html">20260609_0514</a>
+<a href="archive/20260608_0421.html">20260608_0421</a>
+<a href="archive/20260607_0418.html">20260607_0418</a>
+<a href="archive/20260606_0451.html">20260606_0451</a>
+<a href="archive/20260604_0557.html">20260604_0557</a>
+<a href="archive/20260603_0556.html">20260603_0556</a>
+<a href="archive/20260602_0615.html">20260602_0615</a>
+<a href="archive/20260601_0419.html">20260601_0419</a>
+<a href="archive/20260531_0414.html">20260531_0414</a>
+<a href="archive/20260530_0512.html">20260530_0512</a>
+<a href="archive/20260529_0515.html">20260529_0515</a>
+<a href="archive/20260527_0459.html">20260527_0459</a>
+<a href="archive/20260526_0426.html">20260526_0426</a>
+<a href="archive/20260525_0417.html">20260525_0417</a>
+<a href="archive/20260524_0411.html">20260524_0411</a>
+<a href="archive/20260523_0445.html">20260523_0445</a>
+<a href="archive/20260522_0454.html">20260522_0454</a>
+<a href="archive/20260521_0508.html">20260521_0508</a>
+<a href="archive/20260520_0449.html">20260520_0449</a>
+<a href="archive/20260519_0442.html">20260519_0442</a>
+<a href="archive/20260518_0409.html">20260518_0409</a>
+<a href="archive/20260517_0425.html">20260517_0425</a>
+<a href="archive/20260516_0436.html">20260516_0436</a>
+<a href="archive/20260515_0457.html">20260515_0457</a>
+<a href="archive/20260514_0507.html">20260514_0507</a>
+<a href="archive/20260513_0503.html">20260513_0503</a>
+<a href="archive/20260512_0505.html">20260512_0505</a>
+<a href="archive/20260511_0418.html">20260511_0418</a>
+<a href="archive/20260510_0414.html">20260510_0414</a>
+<a href="archive/20260509_0426.html">20260509_0426</a>
+<a href="archive/20260508_0435.html">20260508_0435</a>
+<a href="archive/20260507_0454.html">20260507_0454</a>
+<a href="archive/20260506_0427.html">20260506_0427</a>
+<a href="archive/20260505_0436.html">20260505_0436</a>
+<a href="archive/20260504_0410.html">20260504_0410</a>
+<a href="archive/20260503_0414.html">20260503_0414</a>
+<a href="archive/20260502_0426.html">20260502_0426</a>
+<a href="archive/20260501_0429.html">20260501_0429</a>
+<a href="archive/20260430_0430.html">20260430_0430</a>
+<a href="archive/20260429_0437.html">20260429_0437</a>
+<a href="archive/20260428_0429.html">20260428_0429</a>
+<a href="archive/20260427_0405.html">20260427_0405</a>
+<a href="archive/20260426_0404.html">20260426_0404</a>
+<a href="archive/20260425_0410.html">20260425_0410</a>
+<a href="archive/20260424_0430.html">20260424_0430</a>
+<a href="archive/20260423_0426.html">20260423_0426</a>
+<a href="archive/20260422_0424.html">20260422_0424</a>
+<a href="archive/20260421_0418.html">20260421_0418</a>
+<a href="archive/20260420_0359.html">20260420_0359</a>
+<a href="archive/20260419_0358.html">20260419_0358</a>
+<a href="archive/20260418_0415.html">20260418_0415</a>
+<a href="archive/20260417_0421.html">20260417_0421</a>
+<a href="archive/20260416_0425.html">20260416_0425</a>
+<a href="archive/20260415_0426.html">20260415_0426</a>
+<a href="archive/20260414_0423.html">20260414_0423</a>
+<a href="archive/20260413_0352.html">20260413_0352</a>
+<a href="archive/20260412_0347.html">20260412_0347</a>
+<a href="archive/20260411_0356.html">20260411_0356</a>
+<a href="archive/20260410_0412.html">20260410_0412</a>
+<a href="archive/20260409_0411.html">20260409_0411</a>
+<a href="archive/20260407_0404.html">20260407_0404</a>
+<a href="archive/20260406_0347.html">20260406_0347</a>
+<a href="archive/20260405_0344.html">20260405_0344</a>
+<a href="archive/20260404_0350.html">20260404_0350</a>
+<a href="archive/20260403_0400.html">20260403_0400</a>
+<a href="archive/20260401_0408.html">20260401_0408</a>
+<a href="archive/20260331_0407.html">20260331_0407</a>
+<a href="archive/20260329_0347.html">20260329_0347</a>
+<a href="archive/20260328_0350.html">20260328_0350</a>
+<a href="archive/20260326_0357.html">20260326_0357</a>
+<a href="archive/20260325_0405.html">20260325_0405</a>
+<a href="archive/20260324_0400.html">20260324_0400</a>
+<a href="archive/20260323_0342.html">20260323_0342</a>
+<a href="archive/20260322_0340.html">20260322_0340</a>
+<a href="archive/20260321_0347.html">20260321_0347</a>
+<a href="archive/20260320_0356.html">20260320_0356</a>
+<a href="archive/20260319_0358.html">20260319_0358</a>
+<a href="archive/20260318_0405.html">20260318_0405</a>
+<a href="archive/20260317_0401.html">20260317_0401</a>
+<a href="archive/20260316_0343.html">20260316_0343</a>
+<a href="archive/20260315_0341.html">20260315_0341</a>
+<a href="archive/20260314_0344.html">20260314_0344</a>
+<a href="archive/20260313_0352.html">20260313_0352</a>
+<a href="archive/20260312_0352.html">20260312_0352</a>
+<a href="archive/20260311_0347.html">20260311_0347</a>
+<a href="archive/20260310_0350.html">20260310_0350</a>
+<a href="archive/20260309_0338.html">20260309_0338</a>
+<a href="archive/20260308_0337.html">20260308_0337</a>
+<a href="archive/20260307_0347.html">20260307_0347</a>
+<a href="archive/20260306_0402.html">20260306_0402</a>
+<a href="archive/20260305_0348.html">20260305_0348</a>
+<a href="archive/20260304_0348.html">20260304_0348</a>
+<a href="archive/20260303_0348.html">20260303_0348</a>
+<a href="archive/20260302_0336.html">20260302_0336</a>
+<a href="archive/20260301_0339.html">20260301_0339</a>
+<a href="archive/20260228_0348.html">20260228_0348</a>
+<a href="archive/20260227_0354.html">20260227_0354</a>
+<a href="archive/20260226_0402.html">20260226_0402</a>
+<a href="archive/20260225_0404.html">20260225_0404</a>
+<a href="archive/20260224_0406.html">20260224_0406</a>
+<a href="archive/20260223_0338.html">20260223_0338</a>
+<a href="archive/20260222_0339.html">20260222_0339</a>
+<a href="archive/20260221_0345.html">20260221_0345</a>
+<a href="archive/20260220_0348.html">20260220_0348</a>
+<a href="archive/20260219_0358.html">20260219_0358</a>
+<a href="archive/20260218_0358.html">20260218_0358</a>
+<a href="archive/20260217_0343.html">20260217_0343</a>
+<a href="archive/20260216_0339.html">20260216_0339</a>
+<a href="archive/20260215_0338.html">20260215_0338</a>
+<a href="archive/20260213_0401.html">20260213_0401</a>
+<a href="archive/20260212_0404.html">20260212_0404</a>
+<a href="archive/20260210_0409.html">20260210_0409</a>
+<a href="archive/20260208_0339.html">20260208_0339</a>
+<a href="archive/20260207_0349.html">20260207_0349</a>
+<a href="archive/20260206_0347.html">20260206_0347</a>
+<a href="archive/20260205_0346.html">20260205_0346</a>
+<a href="archive/20260204_0354.html">20260204_0354</a>
+<a href="archive/20260202_0337.html">20260202_0337</a>
+<a href="archive/20260201_0333.html">20260201_0333</a>
+<a href="archive/20260131_0345.html">20260131_0345</a>
+<a href="archive/20260130_0341.html">20260130_0341</a>
+<a href="archive/20260129_0344.html">20260129_0344</a>
+<a href="archive/20260128_0341.html">20260128_0341</a>
+<a href="archive/20260127_0338.html">20260127_0338</a>
+<a href="archive/20260126_0330.html">20260126_0330</a>
+<a href="archive/20260125_0329.html">20260125_0329</a>
+<a href="archive/20260124_0337.html">20260124_0337</a>
+<a href="archive/20260123_0337.html">20260123_0337</a>
+<a href="archive/20260122_0343.html">20260122_0343</a>
+<a href="archive/20260121_0424.html">20260121_0424</a>
+<a href="archive/20260119_0329.html">20260119_0329</a>
+<a href="archive/20260118_0327.html">20260118_0327</a>
+<a href="archive/20260117_0332.html">20260117_0332</a>
+<a href="archive/20260116_0339.html">20260116_0339</a>
+<a href="archive/20260115_0334.html">20260115_0334</a>
+<a href="archive/20260114_0333.html">20260114_0333</a>
+<a href="archive/20260113_0334.html">20260113_0334</a>
+<a href="archive/20260112_0331.html">20260112_0331</a>
+<a href="archive/20260111_0329.html">20260111_0329</a>
+<a href="archive/20260110_0333.html">20260110_0333</a>
+<a href="archive/20260109_0334.html">20260109_0334</a>
+<a href="archive/20260108_0335.html">20260108_0335</a>
+<a href="archive/20260107_0330.html">20260107_0330</a>
+<a href="archive/20260106_0336.html">20260106_0336</a>
+<a href="archive/20260105_0328.html">20260105_0328</a>
+<a href="archive/20260104_0328.html">20260104_0328</a>
+<a href="archive/20260103_0325.html">20260103_0325</a>
+<a href="archive/20260102_0339.html">20260102_0339</a>
+<a href="archive/20260101_0329.html">20260101_0329</a>
+<a href="archive/20251231_0333.html">20251231_0333</a>
+<a href="archive/20251230_0332.html">20251230_0332</a>
+<a href="archive/20251229_0329.html">20251229_0329</a>
+<a href="archive/20251228_0332.html">20251228_0332</a>
+<a href="archive/20251227_0329.html">20251227_0329</a>
+<a href="archive/20251226_0330.html">20251226_0330</a>
+<a href="archive/20251225_0329.html">20251225_0329</a>
+<a href="archive/20251224_0331.html">20251224_0331</a>
+<a href="archive/20251223_0332.html">20251223_0332</a>
+<a href="archive/20251222_0328.html">20251222_0328</a>
+<a href="archive/20251221_0329.html">20251221_0329</a>
+<a href="archive/20251220_0330.html">20251220_0330</a>
+<a href="archive/20251219_0330.html">20251219_0330</a>
+<a href="archive/20251218_0345.html">20251218_0345</a>
+<a href="archive/20251217_0332.html">20251217_0332</a>
+<a href="archive/20251216_0333.html">20251216_0333</a>
+<a href="archive/20251215_0333.html">20251215_0333</a>
+<a href="archive/20251214_0327.html">20251214_0327</a>
+<a href="archive/20251212_0333.html">20251212_0333</a>
+<a href="archive/20251211_0331.html">20251211_0331</a>
+<a href="archive/20251210_0332.html">20251210_0332</a>
+<a href="archive/20251209_0331.html">20251209_0331</a>
+<a href="archive/20251208_0328.html">20251208_0328</a>
+<a href="archive/20251207_0327.html">20251207_0327</a>
+<a href="archive/20251206_0330.html">20251206_0330</a>
+<a href="archive/20251205_0331.html">20251205_0331</a>
+<a href="archive/20251204_0331.html">20251204_0331</a>
+<a href="archive/20251203_0333.html">20251203_0333</a>
+<a href="archive/20251202_0335.html">20251202_0335</a>
+<a href="archive/20251201_0328.html">20251201_0328</a>
+<a href="archive/20251130_0327.html">20251130_0327</a>
+<a href="archive/20251129_0328.html">20251129_0328</a>
+<a href="archive/20251128_0327.html">20251128_0327</a>
+<a href="archive/20251127_0327.html">20251127_0327</a>
+<a href="archive/20251126_0329.html">20251126_0329</a>
+<a href="archive/20251125_0327.html">20251125_0327</a>
+<a href="archive/20251124_0327.html">20251124_0327</a>
+<a href="archive/20251123_0326.html">20251123_0326</a>
+<a href="archive/20251122_0328.html">20251122_0328</a>
+<a href="archive/20251121_0328.html">20251121_0328</a>
+<a href="archive/20251120_0329.html">20251120_0329</a>
+<a href="archive/20251119_0328.html">20251119_0328</a>
+<a href="archive/20251118_0328.html">20251118_0328</a>
+<a href="archive/20251117_0326.html">20251117_0326</a>
+<a href="archive/20251116_0325.html">20251116_0325</a>
+<a href="archive/20251115_0327.html">20251115_0327</a>
+<a href="archive/20251114_0328.html">20251114_0328</a>
+<a href="archive/20251113_0330.html">20251113_0330</a>
+<a href="archive/20251112_0329.html">20251112_0329</a>
+<a href="archive/20251111_0328.html">20251111_0328</a>
+<a href="archive/20251110_0325.html">20251110_0325</a>
+<a href="archive/20251109_0326.html">20251109_0326</a>
+<a href="archive/20251108_0328.html">20251108_0328</a>
+<a href="archive/20251107_0328.html">20251107_0328</a>
+<a href="archive/20251106_0329.html">20251106_0329</a>
+<a href="archive/20251105_0326.html">20251105_0326</a>
+<a href="archive/20251104_0327.html">20251104_0327</a>
+<a href="archive/20251103_0324.html">20251103_0324</a>
+<a href="archive/20251102_0326.html">20251102_0326</a>
+<a href="archive/20251101_0324.html">20251101_0324</a>
+<a href="archive/20251031_0328.html">20251031_0328</a>
+<a href="archive/20251030_0330.html">20251030_0330</a>
+<a href="archive/20251029_0329.html">20251029_0329</a>
+<a href="archive/20251028_0329.html">20251028_0329</a>
+<a href="archive/20251027_0322.html">20251027_0322</a>
+<a href="archive/20251026_0327.html">20251026_0327</a>
+<a href="archive/20251025_0331.html">20251025_0331</a>
+<a href="archive/20251024_0329.html">20251024_0329</a>
+<a href="archive/20251023_0329.html">20251023_0329</a>
+<a href="archive/20251022_0330.html">20251022_0330</a>
+<a href="archive/20251021_0331.html">20251021_0331</a>
+<a href="archive/20251020_0328.html">20251020_0328</a>
+<a href="archive/20251019_0321.html">20251019_0321</a>
+<a href="archive/20251018_0327.html">20251018_0327</a>
+<a href="archive/20251017_0320.html">20251017_0320</a>
+<a href="archive/20251016_0328.html">20251016_0328</a>
+<a href="archive/20251015_0328.html">20251015_0328</a>
+<a href="archive/20251014_0323.html">20251014_0323</a>
+<a href="archive/20251011_0328.html">20251011_0328</a>
+<a href="archive/20251010_0330.html">20251010_0330</a>
+<a href="archive/20251009_0321.html">20251009_0321</a>
+<a href="archive/20251008_0343.html">20251008_0343</a>
+<a href="archive/20251007_0353.html">20251007_0353</a>
+<a href="archive/20251006_0325.html">20251006_0325</a>
+<a href="archive/20251005_0350.html">20251005_0350</a>
+<a href="archive/20251004_0352.html">20251004_0352</a>
+<a href="archive/20251003_0352.html">20251003_0352</a>
+<a href="archive/20251002_0356.html">20251002_0356</a>
+<a href="archive/20251001_0321.html">20251001_0321</a>
+<a href="archive/20250925_0335.html">20250925_0335</a>
+<a href="archive/20250924_0350.html">20250924_0350</a>
+<a href="archive/20250923_0348.html">20250923_0348</a>
+<a href="archive/20250922_0346.html">20250922_0346</a>
+<a href="archive/20250921_0345.html">20250921_0345</a>
+<a href="archive/20250920_0342.html">20250920_0342</a>
+<a href="archive/20250919_0346.html">20250919_0346</a>
+<a href="archive/20250918_0342.html">20250918_0342</a>
+<a href="archive/20250917_0336.html">20250917_0336</a>
+<a href="archive/20250916_0333.html">20250916_0333</a>
+<a href="archive/20250915_0333.html">20250915_0333</a>
+<a href="archive/20250914_0328.html">20250914_0328</a>
+<a href="archive/20250913_0322.html">20250913_0322</a>
+<a href="archive/20250912_0335.html">20250912_0335</a>
+<a href="archive/20250911_0337.html">20250911_0337</a>
+<a href="archive/20250910_0338.html">20250910_0338</a>
+<a href="archive/20250909_0341.html">20250909_0341</a>
+<a href="archive/20250908_0342.html">20250908_0342</a>
+<a href="archive/20250907_0333.html">20250907_0333</a>
+<a href="archive/20250906_0350.html">20250906_0350</a>
+<a href="archive/20250905_0319.html">20250905_0319</a>
+<a href="archive/20250904_0323.html">20250904_0323</a>
+<a href="archive/20250903_0355.html">20250903_0355</a>
+<a href="archive/20250902_0325.html">20250902_0325</a>
+<a href="archive/20250901_0355.html">20250901_0355</a>
+<a href="archive/20250831_0355.html">20250831_0355</a>
+<a href="archive/20250830_0356.html">20250830_0356</a>
+<a href="archive/20250829_0355.html">20250829_0355</a>
+<a href="archive/20250828_0333.html">20250828_0333</a>
+<a href="archive/20250827_1654.html">20250827_1654</a>
+<a href="archive/20250827_1602.html">20250827_1602</a>
+<a href="archive/20250827_1557.html">20250827_1557</a>
+<a href="archive/20250827_0320.html">20250827_0320</a>
+<a href="archive/20250826_0320.html">20250826_0320</a>
+<a href="archive/20250825_1752.html">20250825_1752</a>
+<a href="archive/20250825_1709.html">20250825_1709</a>
+<a href="archive/20250825_1652.html">20250825_1652</a>
+<a href="archive/20250825_1647.html">20250825_1647</a>
+<a href="archive/20250825_1645.html">20250825_1645</a>
+<a href="archive/20250825_1631.html">20250825_1631</a>
+<a href="archive/20250825_1606.html">20250825_1606</a>
+<a href="archive/20250825_1559.html">20250825_1559</a>
+<a href="archive/20250825_1558.html">20250825_1558</a>
+<a href="archive/20250825_1556.html">20250825_1556</a>
+<a href="archive/20250825_1531.html">20250825_1531</a>
+<a href="archive/20250825_1525.html">20250825_1525</a>
+<a href="archive/20250825_1516.html">20250825_1516</a>
+<a href="archive/20250825_1450.html">20250825_1450</a>
+<a href="archive/20250825_1444.html">20250825_1444</a>
+<a href="archive/20250825_1438.html">20250825_1438</a>
+<a href="archive/20250825_1414.html">20250825_1414</a>
+<a href="archive/20250825_1413.html">20250825_1413</a>
+<a href="archive/20250825_1410.html">20250825_1410</a>
+<a href="archive/20250825_1408.html">20250825_1408</a>
+<a href="archive/20250825_1405.html">20250825_1405</a>
+<a href="archive/20250825_1401.html">20250825_1401</a>
+<a href="archive/20250825_1355.html">20250825_1355</a>
+<a href="archive/20250825_1347.html">20250825_1347</a>
+<a href="archive/20250825_1345.html">20250825_1345</a>
+<a href="archive/20250825_1344.html">20250825_1344</a>
+<a href="archive/20250825_1343.html">20250825_1343</a>
+<a href="archive/20250825_1340.html">20250825_1340</a>
+<a href="archive/20250825_1339.html">20250825_1339</a>
+<a href="archive/20250825_1333.html">20250825_1333</a>
+<a href="archive/20250825_1323.html">20250825_1323</a>
+<a href="archive/20250825_1317.html">20250825_1317</a>
+<a href="archive/20250825_1243.html">20250825_1243</a>
+<a href="archive/20250824_0342.html">20250824_0342</a>
+<a href="archive/20250823_0343.html">20250823_0343</a>
+<a href="archive/20250823_0142.html">20250823_0142</a>
+<a href="archive/20250822_2331.html">20250822_2331</a>
+<a href="archive/20250822_2308.html">20250822_2308</a>
+<a href="archive/20250822_2258.html">20250822_2258</a>
+<a href="archive/20250822_2241.html">20250822_2241</a>
+<a href="archive/20250822_2228.html">20250822_2228</a>
+<a href="archive/20250822_2206.html">20250822_2206</a>
+<a href="archive/20250822_2147.html">20250822_2147</a>
+<a href="archive/20250822_2111.html">20250822_2111</a>
+<a href="archive/20250822_1259.html">20250822_1259</a>
+<a href="archive/20250822_1233.html">20250822_1233</a>
+<a href="archive/20250822_1229.html">20250822_1229</a>
+<a href="archive/20250822_1223.html">20250822_1223</a>
+<a href="archive/20250822_1210.html">20250822_1210</a>
+<a href="archive/20250822_1201.html">20250822_1201</a>
+<a href="archive/20250822_1111.html">20250822_1111</a>
+<a href="archive/20250822_1058.html">20250822_1058</a>
+<a href="archive/20250822_1052.html">20250822_1052</a>
+<a href="archive/20250822_1045.html">20250822_1045</a>
+<a href="archive/20250822_0657.html">20250822_0657</a>
+<a href="archive/20250822_0553.html">20250822_0553</a></div>
+    </details>
+    <div class="footer">Generated by arxiv-tracker</div>
+  </div>
+</body></html>
